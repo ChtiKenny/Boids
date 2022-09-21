@@ -6,9 +6,9 @@
 class Boid {
   constructor(x,y) {
 
-    this.pos = new Vector(x,y);
+    this.pos = new Vector(x, y);
     this.vel = Vector.random2D();
-    this.vel.setMag(4);
+    this.vel.setMagnitude(4);
     this.acc = new Vector();
 
     this.r = 4;
@@ -24,6 +24,7 @@ class Boid {
     };
 
     this.color = 'rgba(255,255,255,0.7)';
+    return this.toString()
   }
   edges(){
     if (this.pos.x > WIDTH) {
@@ -40,7 +41,7 @@ class Boid {
   detect(boids){
     let detected = [];
     for (let other of boids) {
-      let d = Vector.dist(this.pos, other.pos);
+      let d = Vector.distance(this.pos, other.pos);
       if (other !=this && d < this.perception) {
         detected.push(other);
       }
@@ -52,9 +53,9 @@ class Boid {
     for (let other of boids) {
       avg.add(other.vel);
     }
-    avg.div(boids.length);
-    avg.setMag(this.maxSpeed);
-    avg.sub(this.vel);
+    avg.divide(boids.length);
+    avg.setMagnitude(this.maxSpeed);
+    avg.subtract(this.vel);
     avg.limit(this.maxForce);
     return avg;
   }
@@ -63,24 +64,24 @@ class Boid {
     for (let other of boids) {
       avg.add(other.pos);
     }
-    avg.div(boids.length);
-    avg.sub(this.pos);
-    avg.setMag(this.maxSpeed);
-    avg.sub(this.vel);
+    avg.divide(boids.length);
+    avg.subtract(this.pos);
+    avg.setMagnitude(this.maxSpeed);
+    avg.subtract(this.vel);
     avg.limit(this.maxForce);
     return avg;
   }
   separ(boids){
     let avg = new Vector();
     for (let other of boids) {
-      let diff = Vector.sub(this.pos, other.pos);
-      let d = Vector.dist(this.pos, other.pos);
-      diff.mult(1/(d*d));
+      let diff = Vector.subtract(this.pos, other.pos);
+      let d = Vector.distance(this.pos, other.pos);
+      diff.multiply(1/(d*d));
       avg.add(diff);
     }
-    avg.div(boids.length);
-    avg.setMag(this.maxSpeed);
-    avg.sub(this.vel);
+    avg.divide(boids.length);
+    avg.setMagnitude(this.maxSpeed);
+    avg.subtract(this.vel);
     avg.limit(this.maxForce);
     return avg;
   }
@@ -88,15 +89,15 @@ class Boid {
     this.edges();
     let local = this.detect(boids);
     if (local.length > 0) {
-      this.acc.add(this.align(local).mult(this.scale.align));
-      this.acc.add(this.cohes(local).mult(this.scale.cohes));
-      this.acc.add(this.separ(local).mult(this.scale.separ));
+      this.acc.add(this.align(local).multiply(this.scale.align));
+      this.acc.add(this.cohes(local).multiply(this.scale.cohes));
+      this.acc.add(this.separ(local).multiply(this.scale.separ));
     }
     this.pos.add(this.vel);
     this.vel.add(this.acc);
     this.vel.limit(this.maxSpeed);
-    if (this.vel.mag() < this.minSpeed) {
-      this.vel.setMag(this.minSpeed);
+    if (this.vel.magnitude() < this.minSpeed) {
+      this.vel.setMagnitude(this.minSpeed);
     }
     this.acc.set();
   }
@@ -134,7 +135,7 @@ class Blue extends Boid {
   detect(boids){
     let detected = [];
     for (let other of boids) {
-      let d = Vector.dist(this.pos, other.pos);
+      let d = Vector.distance(this.pos, other.pos);
       if (other !=this && d < this.perception && other instanceof Blue) {
         detected.push(other);
       }
@@ -144,7 +145,7 @@ class Blue extends Boid {
   detectPred(boids){
     let detected = [];
     for (let other of boids) {
-      let d = Vector.dist(this.pos, other.pos);
+      let d = Vector.distance(this.pos, other.pos);
       if (other !=this && d < this.perception && !(other instanceof Blue)) {
         detected.push(other);
       }
@@ -155,7 +156,7 @@ class Blue extends Boid {
     super.update(boids);
     let predator = this.detectPred(boids);
     if (predator.length > 0) {
-      this.acc.add(this.separ(predator).mult(this.scale.separ * 1.01));
+      this.acc.add(this.separ(predator).multiply(this.scale.separ * 1.01));
     }
   }
 }
@@ -174,7 +175,7 @@ class Red extends Boid {
   detect(boids){
     let detected = [];
     for (let other of boids) {
-      let d = Vector.dist(this.pos, other.pos);
+      let d = Vector.distance(this.pos, other.pos);
       if (other !=this && d < this.perception && other instanceof Red) {
         detected.push(other);
       }

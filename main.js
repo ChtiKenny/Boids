@@ -19,12 +19,12 @@ function update() {
 }
 
 function start() {
-  for (let i = 0; i < 0; i++) {
-    let x = Math.floor(Math.random() * WIDTH)  + 1,
-        y = Math.floor(Math.random() * HEIGHT) + 1;
-    flock.push(new Red(x,y));
-  }
-  for (let i = 0; i < 50; i++) {
+  // for (let i = 0; i < 0; i++) {
+  //   let x = Math.floor(Math.random() * WIDTH)  + 1,
+  //       y = Math.floor(Math.random() * HEIGHT) + 1;
+  //   flock.push(new Red(x,y));
+  // }
+  for (let i = 0; i < 20; i++) {
     let x = Math.floor(Math.random() * WIDTH)  + 1,
         y = Math.floor(Math.random() * HEIGHT) + 1;
     flock.push(new Blue(x,y));
